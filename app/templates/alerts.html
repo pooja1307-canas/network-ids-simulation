@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Alert Queue</h1>
+
+<form>
+    <select name="severity" onchange="this.form.submit()">
+        <option value="">All</option>
+
+        {% for s in ['INFO','LOW','MEDIUM','HIGH','CRITICAL'] %}
+        <option value="{{s}}" {% if selected==s %}selected{% endif %}>
+            {{s}}
+        </option>
+        {% endfor %}
+    </select>
+</form>
+
+<div class="table">
+<table>
+
+<tr>
+    <th>ID</th>
+    <th>Time</th>
+    <th>Source</th>
+    <th>Destination</th>
+    <th>Class</th>
+    <th>Severity</th>
+    <th>Risk</th>
+    <th>Reasons</th>
+    <th>Status</th>
+    <th>Investigate</th>
+</tr>
+
+{% for a in alerts %}
+
+<tr>
+    <td>{{a.id}}</td>
+    <td>{{a.timestamp}}</td>
+    <td>{{a.src_ip}}:{{a.src_port}}</td>
+    <td>{{a.dst_ip}}:{{a.dst_port}}</td>
+    <td>{{a.classification}}</td>
+    <td>{{a.severity}}</td>
+    <td>{{a.risk_score}}</td>
+    <td>{{a.reasons}}</td>
+
+    <td>
+        <form method="post" action="/alerts/{{a.id}}">
+            <select name="status" onchange="this.form.submit()">
+                {% for x in ['OPEN','INVESTIGATING','CLOSED'] %}
+                <option {% if a.status==x %}selected{% endif %}>
+                    {{x}}
+                </option>
+                {% endfor %}
+            </select>
+        </form>
+    </td>
+
+    <td>
+        <a href="/alert/{{a.id}}" class="investigate-btn">
+            Investigate
+        </a>
+    </td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+
+{% block title %}Alert Investigation{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-header">
+
+    <div>
+        <h1>Alert Investigation</h1>
+
+        <p class="muted">
+            SOC analyst investigation workspace
+        </p>
+    </div>
+
+    <a class="report-btn" href="/alerts">
+        ← Back to Alerts
+    </a>
+
+</div>
+
+
+<!-- ALERT SUMMARY -->
+
+<section class="investigation-grid">
+
+    <div class="investigation-card">
+
+        <span class="label">ALERT ID</span>
+
+        <strong>
+            #{{ alert.id }}
+        </strong>
+
+    </div>
+
+
+    <div class="investigation-card">
+
+        <span class="label">CLASSIFICATION</span>
+
+        <strong>
+            {{ alert.classification }}
+        </strong>
+
+    </div>
+
+
+    <div class="investigation-card">
+
+        <span class="label">SEVERITY</span>
+
+        <strong class="{{ alert.severity|lower }}">
+            {{ alert.severity }}
+        </strong>
+
+    </div>
+
+
+    <div class="investigation-card">
+
+        <span class="label">RISK SCORE</span>
+
+        <strong class="risk-score">
+            {{ alert.risk_score }}/100
+        </strong>
+
+    </div>
+
+</section>
+
+
+<!-- NETWORK DETAILS -->
+
+<section class="panel">
+
+    <div class="panel-header">
+
+        <h2>Network Flow Details</h2>
+
+        <span>Telemetry</span>
+
+    </div>
+
+
+    <div class="details-grid">
+
+        <div>
+            <span class="detail-label">
+                Timestamp
+            </span>
+
+            <strong>
+                {{ alert.timestamp }}
+            </strong>
+        </div>
+
+
+        <div>
+            <span class="detail-label">
+                Source IP
+            </span>
+
+            <strong>
+                {{ alert.src_ip }}
+            </strong>
+        </div>
+
+
+        <div>
+            <span class="detail-label">
+                Destination IP
+            </span>
+
+            <strong>
+                {{ alert.dst_ip }}
+            </strong>
+        </div>
+
+
+        <div>
+            <span class="detail-label">
+                Protocol
+            </span>
+
+            <strong>
+                {{ alert.protocol }}
+            </strong>
+        </div>
+
+
+        <div>
+            <span class="detail-label">
+                Source Port
+            </span>
+
+            <strong>
+                {{ alert.src_port }}
+            </strong>
+        </div>
+
+
+        <div>
+            <span class="detail-label">
+                Destination Port
+            </span>
+
+            <strong>
+                {{ alert.dst_port }}
+            </strong>
+        </div>
+
+
+        <div>
+            <span class="detail-label">
+                Packets
+            </span>
+
+            <strong>
+                {{ alert.packets }}
+            </strong>
+        </div>
+
+
+        <div>
+            <span class="detail-label">
+                Bytes
+            </span>
+
+            <strong>
+                {{ alert.bytes }}
+            </strong>
+        </div>
+
+
+        <div>
+            <span class="detail-label">
+                Flow Duration
+            </span>
+
+            <strong>
+                {{ alert.duration }} seconds
+            </strong>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- DETECTION EVIDENCE -->
+
+<section class="panel">
+
+    <div class="panel-header">
+
+        <h2>Detection Evidence</h2>
+
+        <span>Why IDS flagged this event</span>
+
+    </div>
+
+
+    <div class="evidence">
+
+        {% for reason in alert.reasons.split(';') %}
+
+        <div class="evidence-item">
+
+            <span class="evidence-icon">!</span>
+
+            <span>
+                {{ reason.strip() }}
+            </span>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<!-- INVESTIGATION STATUS -->
+
+<section class="panel">
+
+    <div class="panel-header">
+
+        <h2>Investigation Status</h2>
+
+        <span>SOC workflow</span>
+
+    </div>
+
+
+    <div class="status-box">
+
+        <div>
+
+            <span class="detail-label">
+                Current Status
+            </span>
+
+            <strong>
+                {{ alert.status }}
+            </strong>
+
+        </div>
+
+
+        <form method="post"
+              action="/alerts/{{ alert.id }}">
+
+            <select name="status">
+
+                <option value="OPEN"
+                    {% if alert.status == "OPEN" %}
+                    selected
+                    {% endif %}>
+                    OPEN
+                </option>
+
+                <option value="INVESTIGATING"
+                    {% if alert.status == "INVESTIGATING" %}
+                    selected
+                    {% endif %}>
+                    INVESTIGATING
+                </option>
+
+                <option value="CLOSED"
+                    {% if alert.status == "CLOSED" %}
+                    selected
+                    {% endif %}>
+                    CLOSED
+                </option>
+
+            </select>
+
+            <button type="submit">
+                Update Status
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- ANALYST CHECKLIST -->
+
+<section class="panel">
+
+    <div class="panel-header">
+
+        <h2>Analyst Investigation Checklist</h2>
+
+        <span>SOC procedure</span>
+
+    </div>
+
+
+    <div class="checklist">
+
+        <label>
+            <input type="checkbox">
+            Validate source and destination information
+        </label>
+
+
+        <label>
+            <input type="checkbox">
+            Review protocol and destination port
+        </label>
+
+
+        <label>
+            <input type="checkbox">
+            Review detection evidence
+        </label>
+
+
+        <label>
+            <input type="checkbox">
+            Evaluate risk score and severity
+        </label>
+
+
+        <label>
+            <input type="checkbox">
+            Determine whether escalation is required
+        </label>
+
+    </div>
+
+</section>
+
+{% endblock %}

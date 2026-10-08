@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Upload Network Traffic CSV</h1>
+
+<div class="card">
+
+    <p>
+        Upload a safe synthetic network-flow CSV file for IDS analysis.
+    </p>
+
+    <form method="post" enctype="multipart/form-data">
+
+        <input type="file" name="file" accept=".csv" required>
+
+        <br><br>
+
+        <button type="submit">
+            Upload CSV
+        </button>
+
+    </form>
+
+    {% if message %}
+        <p><strong>{{ message }}</strong></p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

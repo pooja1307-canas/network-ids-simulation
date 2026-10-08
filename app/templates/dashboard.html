@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block title %}IDS Security Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-header">
+    <div>
+        <h1>Security Operations Center</h1>
+        <p class="muted">
+            Network Intrusion Detection System • Synthetic Defensive Simulation
+        </p>
+    </div>
+
+    <a class="report-btn" href="/report">Generate Incident Report</a>
+</div>
+
+
+<!-- KPI CARDS -->
+
+<section class="cards">
+
+    <div class="card">
+        <div class="card-title">TOTAL EVENTS</div>
+        <div class="card-value">{{ stats.total }}</div>
+        <div class="card-info">Network flows analyzed</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">SUSPICIOUS</div>
+        <div class="card-value warning">{{ stats.suspicious }}</div>
+        <div class="card-info">Events requiring review</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">HIGH / CRITICAL</div>
+        <div class="card-value danger">{{ stats.high }}</div>
+        <div class="card-info">Priority security alerts</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">OPEN ALERTS</div>
+        <div class="card-value">{{ stats.open }}</div>
+        <div class="card-info">SOC investigation queue</div>
+    </div>
+
+</section>
+
+
+<!-- CHARTS -->
+
+<section class="dashboard-grid">
+
+    <div class="panel">
+
+        <div class="panel-header">
+            <h2>Severity Distribution</h2>
+            <span>Alert severity</span>
+        </div>
+
+        {% for item in stats.by_severity %}
+
+        <div class="bar-row">
+
+            <div class="bar-label">
+                <span>{{ item.severity }}</span>
+                <strong>{{ item.count }}</strong>
+            </div>
+
+            <div class="bar-background">
+
+                <div
+                    class="bar
+                    {% if item.severity == 'CRITICAL' %}critical-bar
+                    {% elif item.severity == 'HIGH' %}high-bar
+                    {% elif item.severity == 'MEDIUM' %}medium-bar
+                    {% elif item.severity == 'LOW' %}low-bar
+                    {% else %}info-bar{% endif %}"
+                    style="width: {{ [item.count * 3, 100] | min }}%;">
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-header">
+            <h2>Detection Classification</h2>
+            <span>IDS verdict</span>
+        </div>
+
+        {% for item in stats.by_class %}
+
+        <div class="classification-box">
+
+            <div>
+                <strong>{{ item.classification }}</strong>
+                <p>
+                    {% if item.classification == "POTENTIAL INTRUSION" %}
+                        High-confidence security indicator
+                    {% elif item.classification == "SUSPICIOUS" %}
+                        Requires analyst investigation
+                    {% else %}
+                        Normal network behavior
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="classification-count">
+                {{ item.count }}
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<!-- SOC WORKFLOW -->
+
+<section class="panel workflow">
+
+    <div class="panel-header">
+        <h2>SOC Detection Workflow</h2>
+        <span>End-to-end pipeline</span>
+    </div>
+
+    <div class="workflow-grid">
+
+        <div class="workflow-step">
+            <div class="step-number">01</div>
+            <strong>Traffic Generation</strong>
+            <p>Generate safe synthetic network-flow telemetry.</p>
+        </div>
+
+        <div class="workflow-step">
+            <div class="step-number">02</div>
+            <strong>Feature Engineering</strong>
+            <p>Analyze packets, bytes, ports and flow duration.</p>
+        </div>
+
+        <div class="workflow-step">
+            <div class="step-number">03</div>
+            <strong>Signature Detection</strong>
+            <p>Apply configurable security rules and signatures.</p>
+        </div>
+
+        <div class="workflow-step">
+            <div class="step-number">04</div>
+            <strong>Anomaly Detection</strong>
+            <p>Identify statistically unusual network behavior.</p>
+        </div>
+
+        <div class="workflow-step">
+            <div class="step-number">05</div>
+            <strong>Risk Scoring</strong>
+            <p>Combine detection evidence into a risk score.</p>
+        </div>
+
+        <div class="workflow-step">
+            <div class="step-number">06</div>
+            <strong>SOC Investigation</strong>
+            <p>Review alerts and manage investigation status.</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SECURITY CAPABILITIES -->
+
+<section class="panel">
+
+    <div class="panel-header">
+        <h2>Detection Capabilities</h2>
+        <span>Current implementation</span>
+    </div>
+
+    <div class="capability-grid">
+
+        <div class="capability">
+            <span>✓</span>
+            Signature-Based Detection
+        </div>
+
+        <div class="capability">
+            <span>✓</span>
+            Statistical Anomaly Detection
+        </div>
+
+        <div class="capability">
+            <span>✓</span>
+            Isolation Forest ML
+        </div>
+
+        <div class="capability">
+            <span>✓</span>
+            Risk Scoring
+        </div>
+
+        <div class="capability">
+            <span>✓</span>
+            Alert Severity
+        </div>
+
+        <div class="capability">
+            <span>✓</span>
+            SOC Investigation
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

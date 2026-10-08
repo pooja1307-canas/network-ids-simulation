@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Attack & Detection Analytics</h1>
+
+<div class="kpi-grid">
+
+    <div class="card">
+        <h3>Severity Analysis</h3>
+        {% for x in data.severity %}
+        <p>
+            <strong>{{ x.severity }}</strong>
+            <span>{{ x.count }}</span>
+        </p>
+        {% endfor %}
+    </div>
+
+    <div class="card">
+        <h3>Detection Classification</h3>
+        {% for x in data.classification %}
+        <p>
+            <strong>{{ x.classification }}</strong>
+            <span>{{ x.count }}</span>
+        </p>
+        {% endfor %}
+    </div>
+
+</div>
+
+
+<div class="kpi-grid">
+
+    <div class="card">
+        <h3>Top Source IPs</h3>
+
+        <table>
+            <tr>
+                <th>Source IP</th>
+                <th>Alerts</th>
+            </tr>
+
+            {% for x in data.sources %}
+            <tr>
+                <td>{{ x.src_ip }}</td>
+                <td>{{ x.count }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+
+    <div class="card">
+        <h3>Top Destination Ports</h3>
+
+        <table>
+            <tr>
+                <th>Port</th>
+                <th>Alerts</th>
+            </tr>
+
+            {% for x in data.ports %}
+            <tr>
+                <td>{{ x.dst_port }}</td>
+                <td>{{ x.count }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

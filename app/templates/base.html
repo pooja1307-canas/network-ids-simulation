@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network IDS SOC</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <nav>
+        <a href="/" class="brand">Network IDS SOC</a>
+
+        <div class="nav-links">
+            <a href="/">Dashboard</a>
+            <a href="/alerts">Alerts</a>
+            <a href="/analytics">Analytics</a>
+            <a href="/upload">Upload Traffic</a>
+            <a href="/report">Incident Report</a>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>
