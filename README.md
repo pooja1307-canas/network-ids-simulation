@@ -1,62 +1,226 @@
-# Network Intrusion Detection System (IDS) Simulation
+\# Network Intrusion Detection System (IDS) Simulation
 
-A safe, offline, industry-oriented defensive IDS/SOC project for students.
 
-## Features
-- Synthetic network-flow generator
-- Protocol/port/source/destination analysis
-- Signature/rule detection
-- Statistical anomaly detection
-- Optional Isolation Forest ML
-- Risk scoring and severity
-- SQLite event storage
-- Flask SOC dashboard
-- Alert investigation lifecycle
-- HTML incident report
-- Unit tests
 
-## Safety
-No public or third-party scanning, probing, exploitation, disruption, or real malicious traffic. Attack-like behavior exists only as synthetic records generated locally.
+A safe, offline, defensive \*\*Network Intrusion Detection System (IDS) and Security Operations Center (SOC) simulation\*\* built with Python, Flask, SQLite and Scikit-learn.
 
-## Architecture
-Synthetic Traffic → Feature Engineering → Rule Engine + Anomaly Detector → Risk/Severity → SQLite → Flask SOC Dashboard → Investigation/Report
 
-## Windows setup
-```bat
-py -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-python -m app.cli demo --rows 500
-python run.py
-```
-Open `http://127.0.0.1:5000`.
 
-## Commands
-```bat
-python -m app.cli generate --rows 500
-python -m app.cli detect
-python -m app.cli demo --rows 500
-python -m app.cli reset
-python -m unittest discover -s tests -v
-```
+The project generates synthetic network-flow telemetry and demonstrates how an IDS can detect suspicious behavior, assign risk scores, generate alerts and support SOC-style investigation.
 
-## Detection model
-Rules flag configured high-risk ports, synthetic port-scan patterns, unusual bytes/packets/duration and high synthetic packet rate. Statistical z-scores provide explainable anomaly evidence. Isolation Forest is optional and runs locally on the generated feature set.
 
-## SOC workflow
-Generate telemetry → detect → review severity/risk → filter alerts → set OPEN/INVESTIGATING/CLOSED → export report.
 
-## GitHub strategy
-Repo: `network-intrusion-detection-system`
-Suggested commits: `feat: add traffic generator`, `feat: add signature detection`, `feat: add anomaly detection`, `feat: add sqlite alerts`, `feat: add soc dashboard`, `test: add ids tests`, `docs: add screenshots and report`.
+> \*\*Safety:\*\* This project uses only synthetic/local traffic records. It does not scan, probe, exploit, disrupt, or send malicious traffic to public or third-party systems.
 
-Do not commit `ids.db`, virtual environments, generated traffic, secrets, or large datasets.
 
-## Resume bullet
-Built a defensive Network Intrusion Detection System simulation using Python, Flask, SQLite and Scikit-learn, combining signature and anomaly-based detection with risk scoring, alert lifecycle management and SOC-style incident reporting.
 
-## Interview pitch
-“I built a safe IDS simulation using synthetic network-flow telemetry. It engineers features, applies deterministic signatures and anomaly detection, optionally uses Isolation Forest, combines evidence into a risk score, stores alerts in SQLite, and provides a SOC investigation dashboard. No real system is attacked.”
+\---
 
-## Production limitations
-Educational simulation only. Production IDS would require real telemetry, calibrated baselines, authentication/RBAC, threat intelligence, rule tuning, deduplication, log integrity and operational monitoring.
+
+
+\## Project Overview
+
+
+
+This project simulates an end-to-end IDS workflow:
+
+
+
+\*\*Synthetic Traffic → Feature Engineering → Detection → Anomaly Analysis → Risk Scoring → Alert Storage → SOC Investigation → Incident Report\*\*
+
+
+
+The goal is to demonstrate practical defensive cybersecurity concepts in a safe local environment.
+
+
+
+\---
+
+
+
+\## Key Features
+
+
+
+\- Synthetic network-flow traffic generator
+
+\- CSV traffic upload and analysis
+
+\- Source IP and destination analysis
+
+\- Protocol and port analysis
+
+\- Signature/rule-based detection
+
+\- Statistical anomaly detection
+
+\- Optional Isolation Forest ML detection
+
+\- Risk scoring from 0–100
+
+\- Severity classification:
+
+&#x20; - INFO
+
+&#x20; - LOW
+
+&#x20; - MEDIUM
+
+&#x20; - HIGH
+
+&#x20; - CRITICAL
+
+\- Detection classification:
+
+&#x20; - NORMAL
+
+&#x20; - SUSPICIOUS
+
+&#x20; - POTENTIAL INTRUSION
+
+\- SQLite event and alert storage
+
+\- SOC-style alert queue
+
+\- Alert severity filtering
+
+\- Alert investigation workflow
+
+\- OPEN / INVESTIGATING / CLOSED lifecycle
+
+\- Attack and detection analytics
+
+\- HTML incident report generation
+
+\- Automated tests
+
+
+
+\---
+
+
+
+\## Technology Stack
+
+
+
+| Technology | Purpose |
+
+|---|---|
+
+| Python | Core application and detection logic |
+
+| Flask | SOC web dashboard |
+
+| SQLite | Local alert/event storage |
+
+| Pandas | Network-flow data processing |
+
+| NumPy | Statistical feature calculations |
+
+| Scikit-learn | Isolation Forest anomaly detection |
+
+| HTML/CSS | SOC dashboard interface |
+
+| Pytest | Automated testing |
+
+| Git/GitHub | Version control and project hosting |
+
+
+
+\---
+
+
+
+\## System Architecture
+
+
+
+```text
+
+┌──────────────────────────┐
+
+│ Synthetic Traffic       │
+
+│ Generator / CSV Upload  │
+
+└────────────┬─────────────┘
+
+&#x20;            │
+
+&#x20;            ▼
+
+┌──────────────────────────┐
+
+│ Feature Engineering      │
+
+│ Bytes / Packets / Ports  │
+
+│ Duration / PPS           │
+
+└────────────┬─────────────┘
+
+&#x20;            │
+
+&#x20;            ▼
+
+┌──────────────────────────┐
+
+│ Detection Engine         │
+
+│                          │
+
+│ • Signature Rules       │
+
+│ • Statistical Anomaly   │
+
+│ • Isolation Forest ML   │
+
+└────────────┬─────────────┘
+
+&#x20;            │
+
+&#x20;            ▼
+
+┌──────────────────────────┐
+
+│ Risk \& Severity Engine   │
+
+│ Risk Score: 0–100       │
+
+│ INFO → CRITICAL         │
+
+└────────────┬─────────────┘
+
+&#x20;            │
+
+&#x20;            ▼
+
+┌──────────────────────────┐
+
+│ SQLite Alert Storage     │
+
+└────────────┬─────────────┘
+
+&#x20;            │
+
+&#x20;            ▼
+
+┌──────────────────────────┐
+
+│ Flask SOC Dashboard      │
+
+│                          │
+
+│ • Dashboard             │
+
+│ • Alerts                │
+
+│ • Analytics             │
+
+│ • Investigation         │
+
+│ • Incident Report       │
+
+└──────────────────────────┘
+
